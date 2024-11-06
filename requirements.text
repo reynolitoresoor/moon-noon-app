@@ -1,0 +1,15 @@
+1. Authentication. — Login, possible to use the login data of the school to make it convenient.
+
+2. Instruction/Greetings. — Initial Engagement with users.
+
+3. Dashboard — Data Analytics of students' issues,  Featured Article related to the data analytics, and AI prediction to recommend possible solutions.
+
+4. Services — Contact Peer Facilitator, Contact Councilor, Contact Professional (Accessible if Allowed by Councilor), Appointments, Articles, and Podcast.
+
+5. Messages — reveals the conversations of the student with peer facilitators, Councilor, or Professional.
+
+6. Logs — Mood Chart, Activity Chart (to build healthy habits from choosing/logging activities that are pre-made choices).
+
+7. AI chatbot — Chatbot option (either made or with the use of API).
+
+8. Menu — Profile, Settings, Appearance, FAQs, and the like.
