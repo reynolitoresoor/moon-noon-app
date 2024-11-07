@@ -72,9 +72,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline small"><?php echo $user_data['username']; ?></span>
+                                <span class="mr-2 d-none d-lg-inline small"><?php echo isset($user_data['username'])?$user_data['username']:$user_data[0]['username']; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="<?php echo isset($user_data['profile']) ? $user_data['profile'] :  base_url.'uploads/profile/profile.png'; ?>">
+                                    src="<?php echo isset($user_data[0]['profile']) ? base_url.$user_data[0]['profile'] :  base_url.'uploads/profile/profile.png'; ?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

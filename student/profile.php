@@ -7,7 +7,14 @@ if(!isset($_SESSION['user_data'])) {
    header('Location: '.base_url);
 }
 
-$user_data = $_SESSION['user_data']; 
+$user = new User();
+$user_data = $user->getUserData($_SESSION['user_data']['user_id']);
+
+if($_POST) {
+  $update = $user->update($_POST);
+  $user_data = $user->getUserData($_SESSION['user_data']['user_id']);
+}
+
 include 'inc/header.php';
 ?>
 
@@ -24,10 +31,76 @@ include 'inc/header.php';
                 <?php include 'inc/topbar.php'; ?>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container">
-                    <div class="border">
-                        <p>test</p>
+                <div class="bg-secondary">
+                    <div class="container">
+                        <div class="row p-5 bg-secondary">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    <?php if(isset($update)): ?>
+                                    <div class="row">
+                                      <h3 class="text-success">Profile successfully saved</h3>  
+                                    </div>
+                                    <?php endif; ?>
+                                    <div class="row">
+                                      <div class="col-lg-6 form-group">
+                                        <label class="form-label" for="profile">Upload Profile</label>
+                                        <input type="file" name="profile" id="profile" onchange="loadFile(event)" class="form-control">
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <img id="preview-profile" src="" width="100" height="100" class="img-responsive profile" style="display: none;">
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="username">Username</label>
+                                        <input type="text" class="form-control" id="email" name="username" value="<?= isset($user_data[0]['username']) ? $user_data[0]['username'] : '' ?>" />
+                                      </div>
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="<?= isset($user_data[0]['email']) ? $user_data[0]['email'] : '' ?>" />
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="old-password">Old Password</label>
+                                        <input type="password" class="form-control" id="old-password" name="old_password" />
+                                      </div>
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="new-password">New Password</label>
+                                        <input type="password" class="form-control" id="new-password" name="new_password" />
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="first-name">First Name</label>
+                                        <input type="text" class="form-control" id="first-name" name="first_name" value="<?= isset($user_data[0]['first_name']) ? $user_data[0]['first_name'] : '' ?>" />
+                                      </div>
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="last-name">Last Name</label>
+                                        <input type="text" class="form-control" id="last-name" name="last_name" value="<?= isset($user_data[0]['last_name']) ? $user_data[0]['last_name'] : '' ?>" />
+                                      </div>
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="middle-name">Middle Name</label>
+                                        <input type="text" class="form-control" id="middle-name" name="middle_name" value="<?= isset($user_data[0]['middle_name']) ? $user_data[0]['middle_name'] : '' ?>"/>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="phone">Phone</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" value="<?= isset($user_data[0]['phone']) ? $user_data[0]['phone'] : '' ?>" />
+                                      </div>
+                                      <div class="col-sm form-group">
+                                        <label class="form-label" for="age">Age</label>
+                                        <input type="number" class="form-control" id="age" name="age" value="<?= isset($user_data[0]['age']) ? $user_data[0]['age'] : '' ?>"/>
+                                      </div>
+                                    </div>
+                                    <div class="mt-3" style="text-align: left;">
+                                      <input type="hidden" name="user_id" value="<?php echo $user_data[0]['user_id']; ?>">
+                                      <button type="submit" class="btn btn-primary p-3">Update Profile</button>
+                                    </div>
+                                  </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

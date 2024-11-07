@@ -106,16 +106,15 @@ class User {
         $last_name = $database->escapeString($data['last_name']);
         $phone = $database->escapeString($data['phone']);
         $age = $database->escapeString($data['age']);
-        $about_yourself = $database->escapeString($data['about_yourself']);
         
         if($_FILES["profile"]["name"]) {
         	if($data['old_password'] && $data['new_password']) {
         		$profile = $this->uploadProfile($_FILES);
-	            $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', password = '".$password."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',about_yourself = '".$about_yourself."',phone = '".$phone."', profile = '".$profile."', user_salt = '".$user_salt."' WHERE user_id = $user_id";
+	            $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', password = '".$password."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',phone = '".$phone."', profile = '".$profile."', user_salt = '".$user_salt."' WHERE user_id = $user_id";
 	            $result = $database->emteDirectQuery($query, 'update');
         	} else {
         		$profile = $this->uploadProfile($_FILES);
-	            $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',about_yourself = '".$about_yourself."',phone = '".$phone."', profile = '".$profile."' WHERE user_id = $user_id";
+	            $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',phone = '".$phone."', profile = '".$profile."' WHERE user_id = $user_id";
 	            $result = $database->emteDirectQuery($query, 'update');
         	}
             if($result) {
@@ -125,10 +124,10 @@ class User {
             }
         } else {
             if($data['old_password'] && $data['new_password']) {
-            	$query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', password = '".$password."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',about_yourself = '".$about_yourself."',phone = '".$phone."', user_salt = '".$user_salt."' WHERE user_id = $user_id";
+            	$query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', password = '".$password."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',phone = '".$phone."', user_salt = '".$user_salt."' WHERE user_id = $user_id";
                 $result = $database->emteDirectQuery($query, 'update');
             } else {
-                $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',about_yourself = '".$about_yourself."',phone = '".$phone."' WHERE user_id = $user_id";
+                $query = "UPDATE `".$this->table_name."` SET username = '".$username."', email = '".$email."', first_name = '".$first_name."', last_name = '".$last_name."',middle_name = '".$middle_name."',age = '".$age."',phone = '".$phone."' WHERE user_id = $user_id";
                 $result = $database->emteDirectQuery($query, 'update');
             }        
         }

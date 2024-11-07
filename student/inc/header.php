@@ -35,8 +35,13 @@
         .text-dark {
             color: #000 !important;
         }
-        .bg-primary {
+        .btn-primary, .btn-primary:hover {
             background-color: #0b1c15 !important;
+            border: 0;
+            color: #fff !important;
+        }
+        .text-primary, .text-primary:hover {
+            color: #18392b !important;
         }
         .bg-secondary {
             background-color: #18392b !important;
