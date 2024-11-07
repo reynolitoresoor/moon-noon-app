@@ -7,7 +7,9 @@ if(!isset($_SESSION['user_data'])) {
    header('Location: '.base_url);
 }
 
-$user_data = $_SESSION['user_data']; 
+$user = new User();
+$user_data = $user->getUserData($_SESSION['user_data']['user_id']);
+
 include 'inc/header.php';
 ?>
 
