@@ -15,12 +15,17 @@ $messages = $message->getMessages($user_data[0]['email']);
 
 if($_POST) {
     $data = $_POST;
+    $data['to'] = $_GET['email'];
     $data['from'] = $user_data[0]['email'];
 
     $result = $message->message($data);
-    if($result) {
-        header('Location: ?message=sent');
-    }
+}
+
+if($_GET['email']) {
+    $email = $_GET['email'];
+    $user_messages = $message->getUserMessages($user_data[0]['email'], $email);
+    $profile = $user->getUserByEmail($email);
+
 }
 
 include 'inc/header.php';
@@ -54,11 +59,17 @@ include 'inc/header.php';
                                 <div class="mt-3">
                                     <input type="text" id="search" placeholder="Search Messages" style="width:100%;padding: 10px;border-radius: 25px;border: 0;" />
                                 </div>
-                                <div class="mt-3 p-2 messages" style="height: 80vh;overflow: auto;">
+                                <div class="mt-3" style="height: 80vh;overflow: auto;">
                                     <?php if(count($messages) > 0): foreach($messages as $message): 
-                                            $name = isset($message['first_name'])?ucfirst($message['first_name']).' '.ucfirst($message['last_name']):$message['username'];
-                                        ?>
-                                    <div class="mt-3">
+                                        if(isset($_GET['email']) && $_GET['email'] == $message['to_user']) {
+                                            $active_message = "active";
+                                        } else {
+                                            $active_message = '';
+                                        }
+
+                                        $name = isset($message['first_name'])?ucfirst($message['first_name']).' '.ucfirst($message['last_name']):$message['username'];
+                                    ?>
+                                    <div class="mt-3 p-2 messages <?php echo $active_message; ?>">
                                         <a class="d-flex" href="message.php?email=<?php echo $message['to_user']; ?>">
                                             <img class="img-responsive rounded-circle" height="80" src="<?php echo isset($message['profile'])?base_url.$message['profile']:base_url.'uploads/profile/profile.png'; ?>" />
                                             <div class="ml-3">
@@ -77,27 +88,49 @@ include 'inc/header.php';
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
-                                <form action="" method="POST">
+                                <form id="message-form" action="" method="POST">
                                     <?php if(isset($result)): ?>
                                     <div class="col">
                                         <h4 class="text-white">Your message sent successfully!</h4>
                                     </div>
                                     <?php endif; ?>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label class="form-label">Write Message</label>
-                                            <input type="text" name="to" id="to" class="form-control" placeholder="Search user" />
-                                            <div id="user-results" class="dropdown-menu ml-3" style="width: 95%;">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <div class="dropdown-divider"></div>
+                                    <div class="col d-flex justify-content-between">
+                                        <div class="d-flex">
+                                            <img class="img-responsive rounded-circle" height="80" src="<?php echo isset($profile[0]['profile'])?base_url.$profile[0]['profile']:base_url.'uploads/profile/profile.png'; ?>" />
+                                            <div class="ml-1">
+                                                <h3 class="text-white"><?php echo ucfirst($profile[0]['first_name']).' '.ucfirst($profile[0]['last_name']); ?></h3>
+                                                <?php 
+                                                   if($profile[0]['type'] == 2) {
+                                                      echo '<p>@Teacher</p>';
+                                                   } else if($profile[0]['type'] == 3) {
+                                                      echo '<p>@Student</p>';
+                                                   } else {
+                                                      echo '<p>@Councilor</p>';
+                                                   }
+                                                ?>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="message" id="message" rows="10" placeholder="Write your message..."></textarea>
+                                        <div>
+                                            <a class="text-white" href="user-profile.php?email=<?php echo $profile[0]['email']; ?>"><i class="fa fa-info"></i></a>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                    </div>
+                                    <div class="col mt-5" style="border-top: 1px solid #fff;">
+                                        <div class="row" style="overflow: auto;max-height: 600px;">
+                                            <?php foreach($user_messages as $m): ?>
+                                            <div class="col-12 p-0 mt-2" <?php if($m['from_user'] == $user_data[0]['email']){ echo 'style="display: flex; justify-content: right;"';} ?>>
+                                                <div class="<?php if($m['from_user'] == $user_data[0]['email']){ echo 'from-message';}else{echo 'to-message';} ?>">
+                                                    <p class="text-white"><?php echo $m['message']; ?></p>
+                                                </div>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <div class="row mt-5">
+                                            <div class="col p-0">
+                                                <div class="form-group">
+                                                    <input type="text" name="message" id="send-message" class="form-control" placeholder="Start a new message." style="width: 100%;padding: 25px 10px;border-radius: 25px;" /><i style="position: absolute;right: 25px;font-size: 2em;color:#18392b;top:5px" class="fa fa-paper-plane"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -170,6 +203,21 @@ include 'inc/header.php';
                  $('#user-results').addClass('show');
               }
             });
+        });
+
+        $.fn.enterKey = function (fnc) {
+            return this.each(function () {
+                $(this).keypress(function (ev) {
+                    var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+                    if (keycode == '13') {
+                        fnc.call(this, ev);
+                    }
+                })
+            })
+        }
+
+        $('#send-message').enterKey(function(e) {
+            $('form#message-form').submit();
         })
 
         function onSelectUser(user_id,e) {

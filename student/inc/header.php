@@ -25,6 +25,7 @@
 
     <style type="text/css">
         /* primary: #0b1c15, secondary: #18392b */
+        /* active: 10271d */
         body, #content {
             background-color: #8c9c95 !important;
         }
@@ -58,6 +59,24 @@
         }
         .btn-message {
             border-radius: 30px;
+        }
+        .messages.active {
+            background-color: #10271d;
+        }
+        .to-message, .from-message {
+            width: 60%;
+        }
+        .to-message {
+            width: 60%;
+            background-color: #000;
+            padding: 5px;
+            border-radius: 15px;
+        }
+        .from-message {
+            width: 60%;
+            background-color: gray;
+            padding: 5px;
+            border-radius: 15px;
         }
     </style>
 

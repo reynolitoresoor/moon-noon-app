@@ -427,6 +427,24 @@ class User {
     	return $query;
     }
 
+    public function searchUser($search_user) {
+    	$database = new Database();
+
+    	$query = "SELECT * FROM `".$this->table_name."` WHERE email LIKE '%".$search_user."%' AND type != 1";
+    	$result = $database->emteDirectQuery($query, 'select');
+
+    	return $result;
+    }
+
+    public function getUserByEmail($user_email) {
+    	$database = new Database();
+
+    	$query = "SELECT * FROM `".$this->table_name."` WHERE email = '".$user_email."'";
+    	$result = $database->emteDirectQuery($query, 'select');
+
+    	return $result;
+    }
+
 }
 /* End user */
 
@@ -646,23 +664,25 @@ class Message {
 	public function message($data) {
 		$database = new Database();
 
-		$user_id = intval($data['user_id']);
-		$friend_id = intval($data['friend_id']);
+		$to = $database->escapeString($data['to']);
+		$from = $database->escapeString($data['from']);
 		$message = $database->escapeString($data['message']);
 
-		$query = "INSERT INTO `".$this->table_name."`(user_id, friend_id, message) VALUES($user_id, $friend_id, '".$message."')";
+		$query = "INSERT INTO `".$this->table_name."`(to_user, from_user, message) VALUES('".$to."', '".$from."', '".$message."')";
 		$result = $database->emteDirectQuery($query, 'insert');
 
 		$message_id = $database->last_insert_id;
+
+		return $message_id;
  
-        if($message_id) {
-        	$database = new Database();
+        // if($message_id) {
+        // 	$database = new Database();
 
-        	$query = "SELECT `message`.* FROM `message` WHERE user_id = $user_id OR friend_id = $user_id AND status = 0 ORDER BY message_id DESC";
-		    $result = $database->emteDirectQuery($query, 'select');
+        // 	$query = "SELECT `message`.* FROM `message` WHERE user_id = $user_id OR friend_id = $user_id AND status = 0 ORDER BY message_id DESC";
+		//     $result = $database->emteDirectQuery($query, 'select');
 
-		    return $result;
-        }
+		//     return $result;
+        // }
 	}
 
 	public function getMessage($user_id, $friend_id) {
@@ -674,10 +694,19 @@ class Message {
 	    return $result;
 	}
 
-	public function getMessages($user_id) {
+	public function getUserMessages($from_user, $to_user) {
+		$database = new Database();
+
+    	$query = "SELECT `message`.* FROM `message` WHERE (from_user = '".$from_user."' AND to_user = '".$to_user."') OR (to_user = '".$from_user."' AND from_user = '".$to_user."') ORDER BY id ASC";
+	    $result = $database->emteDirectQuery($query, 'select');
+
+	    return $result;
+	}
+
+	public function getMessages($user_email) {
         $database = new Database();
 
-    	$query = "SELECT `users`.*, `".$this->table_name."`.* FROM `users`,`".$this->table_name."` WHERE `".$this->table_name."`.friend_id = `users`.user_id AND `".$this->table_name."`.user_id = $user_id GROUP BY `".$this->table_name."`.friend_id ";
+    	$query = "SELECT `users`.*, `".$this->table_name."`.*, COUNT(*) as 'total' FROM `users`,`".$this->table_name."` WHERE `".$this->table_name."`.to_user = `users`.email AND `".$this->table_name."`.from_user = '".$user_email."' GROUP BY `".$this->table_name."`.to_user ORDER BY `".$this->table_name."`.created_at DESC";
 	    $result = $database->emteDirectQuery($query, 'select');
 
 	    if($result) {
@@ -685,7 +714,7 @@ class Message {
 	    } else {
 	    	$database = new Database();
 
-	    	$query = "SELECT `users`.*, `".$this->table_name."`.* FROM `users`,`".$this->table_name."` WHERE `".$this->table_name."`.user_id = `users`.user_id AND `".$this->table_name."`.user_id != $user_id AND `".$this->table_name."`.friend_id = $user_id GROUP BY `".$this->table_name."`.user_id ";
+	    	$query = "SELECT `users`.*, `".$this->table_name."`.*, COUNT(*) as 'total' FROM `users`,`".$this->table_name."` WHERE `".$this->table_name."`.from_user = `users`.email AND `".$this->table_name."`.from_user = '".$user_email."' GROUP BY `".$this->table_name."`.to_user ORDER BY `".$this->table_name."`.created_at DESC";
 	        $result = $database->emteDirectQuery($query, 'select');
 
 	        return $result;

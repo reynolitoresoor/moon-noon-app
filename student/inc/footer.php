@@ -19,7 +19,7 @@
     <script type="text/javascript">
         let table = new DataTable('#datatable');
     </script>
-
+    
 </body>
 
 </html>
