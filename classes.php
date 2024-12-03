@@ -445,6 +445,15 @@ class User {
     	return $result;
     }
 
+    public function getCouncilors() {
+    	$database = new Database();
+
+    	$query = "SELECT * FROM `".$this->table_name."` WHERE type = 4";
+    	$result = $database->emteDirectQuery($query, 'select');
+
+    	return $result;
+    }
+
 }
 /* End user */
 

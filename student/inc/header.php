@@ -44,6 +44,9 @@
         .text-primary, .text-primary:hover {
             color: #18392b !important;
         }
+        .bg-dark, .bg-dark:hover {
+            background-color: #000 !important;
+        }
         .bg-secondary {
             background-color: #18392b !important;
         }

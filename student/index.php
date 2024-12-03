@@ -9,6 +9,7 @@ if(!isset($_SESSION['user_data'])) {
 
 $user = new User();
 $user_data = $user->getUserData($_SESSION['user_data']['user_id']);
+$councilors = $user->getCouncilors();
 
 $article = new Articles();
 $articles = $article->getArticles();
@@ -73,7 +74,7 @@ include 'inc/header.php';
                                 <h4 class="font-weight-bold text-white">Find a Peer</h4>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <a href="<?php echo base_url.'students/find-a-councilor.php'; ?>">
+                                <a href="#" data-toggle="modal" data-target="#modal-councilors">
                                     <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
                                     <h4 class="font-weight-bold text-white">Find a Councilor</h4>
                                 </a>
@@ -150,6 +151,43 @@ include 'inc/header.php';
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Create Student Modal -->
+    <div class="modal" id="modal-councilors">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark">
+        
+          <!-- Modal Header -->
+          <div class="modal-header btn-primary bg-dark">
+            <h4 class="modal-title text-center text-light">Find a Councilor</h4>
+            <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+          </div>
+          
+          <!-- Modal body -->
+          <div class="modal-body">
+               <div class="row" id="councilors">
+                   <div class="col-12 p-5">
+                       <input type="text" class="pl-5 pt-2 pb-2" name="search" placeholder="Search the name of a councilor" style="width: 100%;" /><i style="position: absolute;right: 70px;font-size: 1.8em;top: 57px;" class="fa fa-search"></i>
+                   </div>
+                   <?php foreach($councilors as $c): 
+                       $date = date_create($c['created_at']);
+                    ?>
+                   <div class="col-12 text-center p-5">
+                       <img class="img-responsive" width="130" src="<?php echo $c['profile']?base_url.$c['profile']:base_url.'uploads/profile/profile.png'; ?>" />
+                       <h3 class="text-white"><?php echo isset($c['first_name'])?ucfirst($c['first_name']).' '.ucfirst($c['last_name']):$c['username']; ?></h3>
+                       <p class="text-white">Councilor since <?php echo date_format($date, 'Y'); ?></p>
+                       <hr style="border-top: 1px solid #fff;" />
+                       <p class="text-white d-flex align-items-center justify-content-center"><i style="color: #0b1c15; font-size: 2em;" class="fa fa-check-circle m-2"></i> Face-to-face Talk</p>
+                       <p class="text-white d-flex align-items-center justify-content-center"><i style="color: #0b1c15; font-size: 2em;" class="fa fa-check-circle m-2"></i> Online Talk</p>
+                       <a class="btn btn-white pl-5 pr-5 fw-bold"><strong>REQUEST AN APPOINTMENT</strong></a>
+                   </div>
+                   <?php endforeach; ?>
+               </div>
+          </div>
+          
+        </div>
+      </div>
     </div>
 
 <?php include 'inc/footer.php'; ?>
