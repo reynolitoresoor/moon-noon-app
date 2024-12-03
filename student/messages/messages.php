@@ -27,11 +27,7 @@ include '../partials/sidebar.php';
               <h2 class="text-center text-primary">Messages</h2>
               <hr class="border" />
               <?php if(isset($messages)): foreach($messages as $message): 
-                 if($user_id == $message['friend_id']){
-                   $friend_id = $message['user_id'];
-                 } else {
-                   $friend_id = $message['friend_id'];
-                 }
+                
               ?>
               <div class="col-lg-12 col-md-12">
                 <a href="<?php echo base_url.'message?friend_id='.$friend_id; ?>"><img class="img-responsive profile" src="<?php if(isset($message['profile'])){echo base_url.$message['profile'];}else{echo base_url.'uploads/profile/profile.png';} ?>" width="100" height="100" /> <span><?php echo $message['username']; ?></span></a>

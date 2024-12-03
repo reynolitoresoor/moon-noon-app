@@ -13,6 +13,7 @@ include BASE_APP.'/admin/inc/header.php';
 $user = new User();
 $students = $user->getAllStudents();
 
+
 ?>
     <!-- Page Wrapper -->
     <div id="wrapper">

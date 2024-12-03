@@ -780,4 +780,121 @@ class Issues {
 	}
 }
 
+class Articles {
+	public $table_name = "articles";
+    
+    public function create($data) {
+		$database = new Database();
+
+		$user_id = intval($data['user_id']);
+		$article = $database->escapeString($data['article']);
+		$content = $database->escapeString($data['content']);
+		$file = $this->uploadFile($_FILES);
+        $attachment = $file?$file:'';
+
+		$query = "INSERT INTO `".$this->table_name."`(user_id, article, content, attachment) VALUES($user_id, '".$article."','".$content."','".$attachment."')";
+		$result = $database->emteDirectQuery($query, 'insert');
+
+		return $result;
+	}
+
+	public function getArticles() {
+		$database = new Database();
+
+    	$query = "SELECT `".$this->table_name."`.* FROM `".$this->table_name."` ORDER BY id DESC";
+	    $result = $database->emteDirectQuery($query, 'select');
+
+	    return $result;
+	}
+
+	public function getArticle($id) {
+		$database = new Database();
+
+    	$query = "SELECT * FROM `".$this->table_name."` WHERE id = $id";
+	    $result = $database->emteDirectQuery($query, 'select');
+
+	    return $result;
+	}
+
+	public function updateArticle($data) {
+		$database = new Database();
+
+		$article_id = intval($data['id']);
+		$article = $database->escapeString($data['article']);
+		$content = $database->escapeString($data['content']);
+		$file = $this->uploadFile($_FILES);
+        $attachment = $file?$file:'';
+
+    	$query = "UPDATE `".$this->table_name."` SET id = $article_id, article = '".$article."', content = '".$content."', attachment = '".$attachment."' WHERE id = $article_id";
+	    $result = $database->emteDirectQuery($query, 'update');
+
+	    return $result;
+	}
+
+	public function delete($id) {
+		$database = new Database();
+
+		$id = intval($id);
+
+		$query = "DELETE FROM `".$this->table_name."` WHERE id = $id";
+		$result = $database->emteDirectQuery($query, 'delete');
+
+		return $result;
+	}
+
+	public function uploadFile($file) {
+		$database = new Database();
+
+		$target_dir = "uploads/articles/";
+		$target_file = $target_dir . basename($database->escapeString($_FILES["file"]["name"]));
+		$uploadOk = 1;
+		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+		// Check if image file is a actual image or fake image
+		$check = getimagesize($_FILES["file"]["tmp_name"]);
+		if($check !== false) {
+		   $uploadOk = 1;
+		} else {
+		   $this->message['error'][] = "File is not an image.";
+		   $uploadOk = 0;
+		}
+
+		// Check if file already exists
+		if (file_exists($target_file)) {
+		  $this->message['error'][] =  "Sorry, file already exists.";
+		  $uploadOk = 0;
+		}
+
+
+		// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		  $this->message['error'][] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		  $uploadOk = 0;
+		}
+
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		  $this->message['error'][] = "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		  if (move_uploaded_file($_FILES["file"]["tmp_name"], BASE_APP
+		  	.$target_file)) {
+		    return $target_file;
+		  } else {
+		    $this->message['error'][] = "Sorry, there was an error uploading your file.";
+		  }
+		}
+	}
+
+	public function getArticleData($article_id) {
+    	$database = new Database();
+
+    	$query = "SELECT * FROM `".$this->table_name."` WHERE id = $article_id";
+    	$result = $database->emteDirectQuery($query, 'select');
+
+    	return $result;
+    }
+}
+
 ?>

@@ -40,15 +40,20 @@
                     <i class="fas fa-calendar"></i>
                     <span>Services</span></a>
             </li>
+            <li class="nav-item <?php if($page_title == 'Appointments'){echo 'active';} ?>">
+                <a class="nav-link" href="<?php echo base_url.'admin/appointments'; ?>">
+                    <i class="fas fa-calendar"></i>
+                    <span>Appointments</span></a>
+            </li>
+            <li class="nav-item <?php if($page_title == 'Articles'){echo 'active';} ?>">
+                <a class="nav-link" href="<?php echo base_url.'admin/articles'; ?>">
+                    <i class="fas fa-calendar"></i>
+                    <span>Articles</span></a>
+            </li>
             <li class="nav-item <?php if($page_title == 'AI Chatbot'){echo 'active';} ?>">
                 <a class="nav-link" href="<?php echo base_url.'admin/ai-chatbot'; ?>">
                     <i class="fas fa-calendar"></i>
                     <span>AI Chatbot</span></a>
-            </li>
-            <li class="nav-item <?php if($page_title == 'Logs'){echo 'active';} ?>">
-                <a class="nav-link" href="<?php echo base_url.'admin/logs'; ?>">
-                    <i class="fas fa-calendar"></i>
-                    <span>Logs</span></a>
             </li>
 
             <!-- Heading -->

@@ -10,6 +10,9 @@ if(!isset($_SESSION['user_data'])) {
 $user = new User();
 $user_data = $user->getUserData($_SESSION['user_data']['user_id']);
 
+$article = new Articles();
+$articles = $article->getArticles();
+
 include 'inc/header.php';
 ?>
     <!-- Page Wrapper -->
@@ -43,24 +46,22 @@ include 'inc/header.php';
                             <div class="col-12">
                                <h3 class="text-white font-weight-bold">Recommended articles, based on current data</h3> 
                             </div>
+                            <?php if($articles): 
+                                    $counter = 1;
+                                    foreach($articles as $article):
+                            ?>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="card" style="width:20rem;margin:20px 0 24px 0">
-                                  <img class="card-img-top" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" alt="image" style="width:100%">
+                                  <img class="card-img-top" height="180" src="<?php echo base_url.$article['attachment']; ?>" alt="image" style="width:100%">
                                   <div class="card-body">
-                                    <p class="card-text text-dark">Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer.</p>
+                                    <h4 class="card-title"><?php echo ucfirst($article['article']); ?></h4>
+                                    <p class="card-text text-dark"><?php echo $article['content']; ?></p>
                                   </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="card" style="width:20rem;margin:20px 0 24px 0">
-                                  <img class="card-img-top" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" alt="image" style="width:100%">
-                                  <div class="card-body">
-                                    <p class="card-text text-dark">Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer.</p>
-                                  </div>
-                                </div>
-                            </div>
+                            <?php if($counter == 2){break;} $counter++; endforeach; endif; ?>
                             <div class="col-lg-4 col-md-4 col-sm-4 d-flex align-items-center text-center">
-                                <a href="#" class="text-white" style="font-size: 1.5em;">Read other articles <br/><i class="fas fa-arrow-circle-right fa-sm fa-fw mr-2 text-gray-400" style="font-size: 2.5em;"></i></a>
+                                <a href="<?php echo base_url.'student/articles.php'; ?>" class="text-white" style="font-size: 1.5em;">Read other articles <br/><i class="fas fa-arrow-circle-right fa-sm fa-fw mr-2 text-gray-400" style="font-size: 2.5em;"></i></a>
                             </div>
                         </div>
                         <div class="row p-5 bg-secondary">
@@ -72,16 +73,22 @@ include 'inc/header.php';
                                 <h4 class="font-weight-bold text-white">Find a Peer</h4>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
-                                <h4 class="font-weight-bold text-white">Find a Councilor</h4>
+                                <a href="<?php echo base_url.'students/find-a-councilor.php'; ?>">
+                                    <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
+                                    <h4 class="font-weight-bold text-white">Find a Councilor</h4>
+                                </a>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
-                                <h4 class="font-weight-bold text-white">Appointments</h4>
+                                <a href="<?php echo base_url.'students/appointments.php'; ?>">
+                                    <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
+                                    <h4 class="font-weight-bold text-white">Appointments</h4>
+                                </a>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
-                                <h4 class="font-weight-bold text-white">Explore Articles</h4>
+                                <a href="<?php echo base_url.'student/articles.php'; ?>">
+                                    <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">
+                                    <h4 class="font-weight-bold text-white">Explore Articles</h4>
+                                </a>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center mt-5">
                                 <img class="card-img-top rounded-circle mb-2" src="<?php echo base_url.'uploads/images/sample.jpg' ?>" height="250"alt="image">

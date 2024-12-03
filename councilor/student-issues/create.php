@@ -1,0 +1,19 @@
+<?php 
+require_once('../../database.php');
+require_once('../../classes.php'); 
+
+if(!isset($_SESSION['user_data'])) {
+   header('Location: '.base_url);
+}
+
+if(!empty($_POST)) {
+    $data = $_POST;
+    $issues = new Issues();
+    $create = $issues->create($data);
+
+    if($create) {
+      header('Location: '.base_url.'admin/student-issues');
+      exit();
+    }
+}
+?>

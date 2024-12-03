@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2024 at 05:23 AM
+-- Generation Time: Dec 03, 2024 at 04:39 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.0.23
 
@@ -20,6 +20,48 @@ SET time_zone = "+00:00";
 --
 -- Database: `well_being_app`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointments`
+--
+
+CREATE TABLE `appointments` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `article` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `attachment` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `articles`
+--
+
+INSERT INTO `articles` (`id`, `user_id`, `article`, `content`, `attachment`, `created_at`, `updated_at`) VALUES
+(1, 50, 'Test Article', 'Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer', 'uploads/articles/article1.jpg', '2024-12-03 03:26:53', '2024-12-03 03:26:53'),
+(3, 0, 'adfadf', 'Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer', 'uploads/articles/article2.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 0, 'asda', 'Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer', 'uploads/articles/article3.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 0, 'New Article', 'Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer. Some example text some example text. John Doe is an architect and engineer', 'uploads/articles/article2.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -144,7 +186,7 @@ CREATE TABLE `users` (
   `profile` varchar(255) DEFAULT NULL,
   `user_salt` text DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '0 = inactive, 1 = active',
-  `type` int(11) DEFAULT 3 COMMENT '1=admin, 2=teacher, 3=student',
+  `type` int(11) DEFAULT 3 COMMENT '1=admin, 2=teacher, 3=student, 4=councilor',
   `create_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -160,11 +202,26 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `first_name`, `
 (54, 'testuser', 'adfasdf@gmail.com', '098f6bcd4621d373cade4e832627b4f6l1xLOH4FlspviTEBNFoa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'l1xLOH4FlspviTEBNFoa', 1, 3, '2024-11-04 03:05:38'),
 (55, 'reyno', 'reyno@gmail.com', '098f6bcd4621d373cade4e832627b4f60Gfl9WYy5zTx43KMYMnk', 'reyno', 'test', NULL, NULL, NULL, NULL, NULL, '0Gfl9WYy5zTx43KMYMnk', 1, 3, '2024-11-04 03:09:24'),
 (56, 'teacher', 'teacher@gmail.com', '8d788385431273d11e8b43bb78f3aa41QUd9Aeo7OiDpiuNGJcWI', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'QUd9Aeo7OiDpiuNGJcWI', 1, 2, '2024-11-04 06:08:35'),
-(57, 'student', 'student@gmail.com', 'cd73502828457d15655bbd7a63fb0bc8vI38IgM571KE4tgyYNON', 'student', 'student', '', 0, '', '', 'uploads/profile/sample profile.jpg', 'vI38IgM571KE4tgyYNON', 1, 3, '2024-11-06 00:13:43');
+(57, 'student', 'student@gmail.com', 'cd73502828457d15655bbd7a63fb0bc8vI38IgM571KE4tgyYNON', 'student', 'student', '', 0, '', '', 'uploads/profile/sample profile.jpg', 'vI38IgM571KE4tgyYNON', 1, 3, '2024-11-06 00:13:43'),
+(58, 'councilor', 'coucilor@gmail.com', '1d2562eec5142e590984a7f0ad335ddfLQQy8VWqXuhwA8g3XbFi', 'councilor', 'councilor', NULL, NULL, NULL, NULL, NULL, 'LQQy8VWqXuhwA8g3XbFi', 1, 4, '2024-12-03 00:53:56'),
+(59, 'couciloruser', 'couciloruser@gmail.com', 'b6c323c6ce5d3018c8d733c1a130150eA7bThUWu7zvxnXyTljOg', 'couciloruser', 'couciloruser', NULL, NULL, NULL, NULL, NULL, 'A7bThUWu7zvxnXyTljOg', 1, 4, '2024-12-03 00:54:44'),
+(60, '', '', 'd41d8cd98f00b204e9800998ecf8427ej6cv7o3GbUpmAR47J0XA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'j6cv7o3GbUpmAR47J0XA', 1, 3, '2024-12-03 02:51:00');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `appointments`
+--
+ALTER TABLE `appointments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `issues`
@@ -202,6 +259,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `appointments`
+--
+ALTER TABLE `appointments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `issues`
 --
 ALTER TABLE `issues`
@@ -229,7 +298,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
